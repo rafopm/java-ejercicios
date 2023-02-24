@@ -67,4 +67,52 @@ public class MensajeDao {
         }
         return registros;
     }
+
+    public int editar(Mensaje mensaje) throws ClassNotFoundException {
+        String sql = "UPDATE mensajes SET mensaje=?, autor= ? WHERE id_mensaje=?";
+        int registros = 0;
+        try {
+            this.conn = getConexion();
+            this.ps = this.conn.prepareStatement(sql);
+
+            this.ps.setString(1, mensaje.getMensaje());
+            this.ps.setString(2, mensaje.getAutor());
+            this.ps.setInt(3, mensaje.getId());
+            registros = this.ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            try {
+                cerrar(this.ps);
+                cerrar(this.conn);
+            } catch (SQLException e) {
+                e.printStackTrace(System.out);
+            }
+        }
+        return registros;
+    }
+
+    public int eliminar(Mensaje mensaje) throws ClassNotFoundException {
+        String sql = "DELETE FROM mensajes WHERE id_mensaje=?";
+        int registros = 0;
+        try {
+            this.conn = getConexion();
+            this.ps = this.conn.prepareStatement(sql);
+
+            this.ps.setInt(1, mensaje.getId());
+            registros = this.ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            try {
+                cerrar(this.ps);
+                cerrar(this.conn);
+            } catch (SQLException e) {
+                e.printStackTrace(System.out);
+            }
+        }
+        return registros;
+    }
 }
